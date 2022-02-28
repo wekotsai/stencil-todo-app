@@ -8,24 +8,29 @@ let TodoApp = class {
     this.list = [];
   }
   inputHandler(event) {
-    this.addItem(event);
-  }
-  addItem(event) {
     this.value = event.target.value;
-    if (event.keyCode !== 8) {
-      this.list.push(`${this.value}`);
+  }
+  keyUpHandler(event) {
+    console.log(event.key);
+    if (event.key === 'Enter') {
+      this.addItem();
+    }
+    if (event.key === 'Escape') {
+      this.clearInput();
     }
   }
-  clickHandler(event) {
-    this.removeItem(event);
+  addItem() {
+    this.list = this.list.concat([this.value]);
+    this.clearInput();
   }
-  removeItem(event) {
-    var index = this.list.indexOf(this.value);
-    this.value = event.target.value;
-    this.list.splice(index, 1);
+  removeItem(value) {
+    this.list = this.list.filter(item => item !== value);
+  }
+  clearInput() {
+    this.value = '';
   }
   render() {
-    return (h("div", { class: "todo-app" }, h("input", { value: this.value, type: "text", onInput: this.inputHandler.bind(this) }), h("div", null, (this.list).map(item => (h("ul", { class: "list" }, h("li", { class: "item" }, item, " ", h("button", { onClick: this.clickHandler.bind(this) }, "x"))))))));
+    return (h("div", { class: "todo-app" }, h("input", { value: this.value, type: "text", onInput: (event) => this.inputHandler(event), onKeyUp: (event) => this.keyUpHandler(event) }), h("div", null, h("ul", { class: "list" }, (this.list).map(value => (h("li", { class: "item" }, value, " ", h("button", { onClick: () => this.removeItem(value) }, "x"))))))));
   }
 };
 TodoApp.style = todoAppCss;

@@ -8,42 +8,45 @@ import {Component, Prop, State, h} from '@stencil/core';
 export class TodoApp {
   @Prop() item: string;
   @State() value: string;
-
-
-  list = [];
+  @State() list = [];
 
   inputHandler(event) {
-    this.addItem(event);
+    this.value = event.target.value;
   }
 
-  addItem(event) {
-    this.value = event.target.value;
-    if (event.keyCode !== 8) {
-    this.list.push(`${this.value}`);
+  keyUpHandler(event) {
+    console.log(event.key);
+    if (event.key === 'Enter') {
+      this.addItem();
+    }
+    if (event.key === 'Escape') {
+      this.clearInput();
     }
   }
 
-  clickHandler(event) {
-    this.removeItem(event);
+  addItem() {
+    this.list = this.list.concat([this.value]);
+    this.clearInput();
   }
 
-  removeItem(event) {
-    var index = this.list.indexOf(this.value);
-    this.value = event.target.value;
-    this.list.splice(index, 1);
+  removeItem(value) {
+    this.list = this.list.filter(item => item !== value);
+  }
+
+  clearInput() {
+    this.value = '';
   }
 
  render() {
    return (
     <div class="todo-app">
-      <input value={this.value} type="text" onInput={this.inputHandler.bind(this)}/>
-      {/* <button type="submit">Add</button> */}
+      <input value={this.value} type="text" onInput={(event) => this.inputHandler(event)} onKeyUp={(event) => this.keyUpHandler(event)}/>
       <div>
-        {(this.list).map(item => (
-          <ul class="list">
-            <li class="item">{item} <button onClick={this.clickHandler.bind(this)}>x</button></li>
-          </ul>
+        <ul class="list">
+        {(this.list).map(value => (
+          <li class="item">{value} <button onClick={()=>this.removeItem(value)}>x</button></li>
         ))}
+        </ul>
       </div>
     </div>
    );
