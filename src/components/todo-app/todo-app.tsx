@@ -11,6 +11,7 @@ export class TodoApp {
   // always deifne types
   @State() list: string[] = [];
   @State() checked: string[] = [];
+  @State() quantity: number = 0;
 
   inputHandler(event) {
     this.value = event.target.value;
@@ -29,6 +30,7 @@ export class TodoApp {
   addItem() {
     if (this.value.length !== 0) {
       this.list = this.list.concat([this.value]);
+      this.quantity++
       this.clearInput();
     }
   }
@@ -36,6 +38,7 @@ export class TodoApp {
   removeItem(value) {
     this.list = this.list.filter(item => item !== value);
     this.checked = this.checked.filter(item => item !== value);
+    this.quantity--;
   }
 
   // pass value and type
@@ -68,10 +71,16 @@ export class TodoApp {
             <input class="checkbox" type="checkbox" checked={this.isChecked(value)} value={value} onChange={() => this.checkboxHandler(value)}/>
               {/* class name strike: is only appended when an item is checked, otherwise it's empty */}
               <span class={{strike:this.isChecked(value)}}>{value}</span>
-            <button onClick={()=>this.removeItem(value)}>x</button>
+            <button class="remove" onClick={()=>this.removeItem(value)}><span>x</span></button>
           </li>
         ))}
         </ul>
+        <div class="buttons">
+          <span class="quantity">{this.quantity} item(s) left</span>
+          <button>All</button>
+          <button>Actvie</button>
+          <button>Completed</button>
+        </div>
       </div>
     </div>
    );
