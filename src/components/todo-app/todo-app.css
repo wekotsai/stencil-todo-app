@@ -1,47 +1,73 @@
 h1 {
-  color: #62ebbc;
+  font-size: 100px;
+  font-family: 'Helvetica Neue', sans-serif;
+  color: rgba(175, 47, 47, 0.15);
 }
 
 .todo-app {
   text-align: center;
+  position: relative;
   max-width: 450px;
   margin: 0 auto;
+  box-shadow: 0 0.125rem 0.625rem 0 rgb(0 0 0 / 20%);
 }
 
 .list {
   list-style: none;
   width: 100%;
-  margin: 0 auto;
+  margin: 0;
   text-align: left;
-  padding: 0.5rem;
+  padding: 0;
 }
 
 .item {
-  border-bottom: 1px solid #c9c8cf;
-  padding: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.item span, .field {
+  color: #4d4d4d;
 }
 
 .field {
-  padding: 0.5rem 1rem;
-  width: 100%;
+  padding: 0.5rem 0rem;
+  width: -webkit-fill-available;
+  padding-left: 50px;
+  font-size: 18px;
+  height: 35px;
   border: none;
-  border-radius: 10px;
-  box-shadow: 0 0.125rem 0.625rem 0 rgb(0 0 0 / 20%);
+  border-bottom: 1px solid #e6e6e6;
+}
+
+label:before {
+  content: '❯';
+  font-size: 22px;
+  color: #e6e6e6;
+  position: absolute;
+  top: 5px;
+  left: -7px;
+  padding: 10px 27px 10px 27px;
+  transform: rotate(90deg);
 }
 
 .checkbox {
   margin-right: 1rem;
 }
 
+/* .cross {
+  display: none;
+} */
+
 .remove {
-  border: 1.5px solid #d992a7;
   background-color: white;
   border-radius: 50px;
+  border: none;
   float: right;
 }
 
 .remove span {
-  color: #d992a7;
+  color: #cc9a9a;
+  font-size: 18px;
 }
 
 .strike {
@@ -54,13 +80,21 @@ h1 {
   margin-right: 20px;
 }
 
-.buttons button {
+.filters {
+  padding: 0.5rem;
+  background-color: white;
+}
+
+.filters button {
   color: #a09fa6;
   border-style: none;
   border-color: transparent;
   background-color: transparent;
 }
 
-.buttons button:active {
-  color: #d992a7;
+.filters button:active, .filters button:focus {
+  border: 1px solid rgba(175, 47, 47, 0.2);
+  border-radius: 3px;
+  margin: 3px;
+  padding: 3px 7px;
 }

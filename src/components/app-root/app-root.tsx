@@ -9,7 +9,7 @@ export class AppRoot {
   render() {
     return (
       <div class="app-root">
-        <h1>Todo List</h1>
+        <h1>todos</h1>
         <main>
          <todo-app></todo-app>
        </main>

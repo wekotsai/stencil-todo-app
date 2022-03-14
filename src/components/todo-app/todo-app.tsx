@@ -43,7 +43,6 @@ export class TodoApp {
 
   // pass value and type
   checkboxHandler(value:string) {
-    // if this checkbox value is checked, remove the tick
     if (this.isChecked(value)) {
       this.checked = this.checked.filter(item => item !== value);
     } else {
@@ -60,10 +59,22 @@ export class TodoApp {
     this.value = '';
   }
 
+  completedItem(value) {
+    this.list = this.checked.filter(item => item !== value);
+  }
+
+  // figure out how to show all / active items
+  allItem(value) {
+    this.list = this.list.filter(item => item !== value);
+  }
+
  render() {
    return (
     <div class="todo-app">
-      <input class="field" value={this.value} type="text" onInput={(event) => this.inputHandler(event)} onKeyUp={(event) => this.keyUpHandler(event)}/>
+      <input
+        class="field" value={this.value} type="text"
+        onInput={(event) => this.inputHandler(event)} onKeyUp={(event) => this.keyUpHandler(event)}/>
+      <label htmlFor="selectAll"></label>
       <div>
         <ul class="list">
         {(this.list).map(value => (
@@ -71,15 +82,17 @@ export class TodoApp {
             <input class="checkbox" type="checkbox" checked={this.isChecked(value)} value={value} onChange={() => this.checkboxHandler(value)}/>
               {/* class name strike: is only appended when an item is checked, otherwise it's empty */}
               <span class={{strike:this.isChecked(value)}}>{value}</span>
-            <button class="remove" onClick={()=>this.removeItem(value)}><span>x</span></button>
+            <button class="remove" onClick={()=>this.removeItem(value)}>
+              <span class="cross">x</span>
+            </button>
           </li>
         ))}
         </ul>
-        <div class="buttons">
-          <span class="quantity">{this.quantity} item(s) left</span>
-          <button>All</button>
+        <div class="filters">
+          <span class="quantity">{this.quantity} items left</span>
+          <button onClick={(value) => this.allItem(value)}>All</button>
           <button>Actvie</button>
-          <button>Completed</button>
+          <button onClick={(value) => this.completedItem(value)}>Completed</button>
         </div>
       </div>
     </div>
