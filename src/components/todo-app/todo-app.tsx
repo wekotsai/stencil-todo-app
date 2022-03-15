@@ -60,22 +60,26 @@ export class TodoApp {
     this.value = '';
   }
 
-  completedItem(value) {
+  selectAll() {
+    console.log('hi');
+  }
+
+  completedItems(value) {
     this.list = this.checked.filter(item => item !== value);
   }
 
   // figure out how to show all / active items
-  allItem(value) {
-    this.list = this.list.filter(item => item !== value);
+  allItems(value) {
+    this.list = this.checked.filter(value);
   }
 
  render() {
    return (
     <div class="todo-app">
       <input
-        class="field" value={this.value} type="text"
+        class="field" value={this.value} type="text" placeholder="What needs to be done?"
         onInput={(event) => this.inputHandler(event)} onKeyUp={(event) => this.keyUpHandler(event)}/>
-      <label htmlFor="selectAll"></label>
+      <label htmlFor="selectAll" class="selectAll" onClick={()=>this.selectAll()}></label>
       <div>
         <ul class="list">
         {(this.list).map(value => (
@@ -83,17 +87,16 @@ export class TodoApp {
             <input class="checkbox" type="checkbox" checked={this.isChecked(value)} value={value} onChange={() => this.checkboxHandler(value)}/>
               {/* class name strike: is only appended when an item is checked, otherwise it's empty */}
               <span class={{strike:this.isChecked(value)}}>{value}</span>
-            <button class="remove" onClick={()=>this.removeItem(value)}>
-              x
-            </button>
+            <button class="remove" onClick={()=>this.removeItem(value)}>x</button>
           </li>
         ))}
         </ul>
         <div class="filters">
           <span class="quantity">{this.itemsLeft} item{this.itemsLeft !== 1 ? 's' : ''} left</span>
-          <button onClick={(value) => this.allItem(value)}>All</button>
+          <button onClick={(value) => this.allItems}>All</button>
           <button>Actvie</button>
-          <button onClick={(value) => this.completedItem(value)}>Completed</button>
+          <button onClick={(value) => this.completedItems(value)}>Completed</button>
+          <button class="clear">Clear completed</button>
         </div>
       </div>
     </div>

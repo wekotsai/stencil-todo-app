@@ -1,15 +1,16 @@
 h1 {
   font-size: 100px;
-  font-family: 'Helvetica Neue', sans-serif;
+  font-weight: 100;
   color: rgba(175, 47, 47, 0.15);
+  margin-top: 0;
+  padding-top: 10px;
 }
 
 .todo-app {
   text-align: center;
   position: relative;
-  max-width: 450px;
-  margin: 0 auto;
-  box-shadow: 0 0.125rem 0.625rem 0 rgb(0 0 0 / 20%);
+  margin: -55px auto 0 auto;
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%), 0 25px 50px 0 rgb(0 0 0 / 10%);
 }
 
 .list {
@@ -22,7 +23,12 @@ h1 {
 
 .item {
   padding: 1rem;
+  font-size: 24px;
+  background: white;
   border-bottom: 1px solid #e6e6e6;
+  background-image: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23ededed%22%20stroke-width%3D%223%22/%3E%3C/svg%3E);
+  background-repeat: no-repeat;
+  background-position: center left;
 }
 
 .item span, .field {
@@ -30,28 +36,44 @@ h1 {
 }
 
 .field {
-  padding: 0.5rem 0rem;
+  padding: 10px 0;
   width: -webkit-fill-available;
   padding-left: 50px;
-  font-size: 18px;
-  height: 35px;
+  font-size: 24px;
+  height: 46px;
   border: none;
   border-bottom: 1px solid #e6e6e6;
+  box-shadow: inset 0 -2px 1px rgb(0 0 0 / 3%);
+  font-weight: 100;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-label:before {
+.field::placeholder {
+  color: #e6e6e6;
+  font-style: oblique;
+  font-size: 24px;
+  font-weight: 100;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.selectAll::before {
   content: '❯';
   font-size: 22px;
   color: #e6e6e6;
   position: absolute;
-  top: 5px;
+  top: 12px;
   left: -7px;
   padding: 10px 27px 10px 27px;
   transform: rotate(90deg);
 }
 
+.selectAll:checked + label::before {
+  color: #737373;
+}
+
 .checkbox {
-  margin-right: 1rem;
+  visibility: hidden;
+  margin-right: 24px;
 }
 
 .remove {
@@ -60,7 +82,8 @@ label:before {
   border: none;
   float: right;
   color: #cc9a9a;
-  font-size: 18px;
+  font-size: 26px;
+  margin-top: -5px;
   opacity: 0;
 }
 
@@ -75,26 +98,48 @@ label:before {
 }
 
 .quantity {
-  color: #a09fa6;
-  font-size: 13.333px;
-  margin-right: 20px;
+  position: absolute;
+  left: 10px;
+}
+
+.quantity, button {
+  color: #777777;
+  font-size: 14px;
+  font-weight: 100;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0 3px;
+  padding: 3px 7px;
 }
 
 .filters {
+  height: 25px;
   padding: 0.5rem;
   background-color: white;
 }
 
 .filters button {
-  color: #a09fa6;
-  border-style: none;
-  border-color: transparent;
+  border: 1px solid rgba(175, 47, 47, 0);
+  border-radius: 3px;
   background-color: transparent;
 }
 
 .filters button:active, .filters button:focus {
   border: 1px solid rgba(175, 47, 47, 0.2);
-  border-radius: 3px;
-  margin: 3px;
-  padding: 3px 7px;
+}
+
+.filters:before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 50px;
+  overflow: hidden;
+  z-index: -1;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 20%), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgb(0 0 0 / 20%), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgb(0 0 0 / 20%);
+}
+
+.clear {
+  position: absolute;
+  right: 0;
 }
