@@ -93,7 +93,7 @@ export class TodoApp {
         </ul>
         <div class="filters">
           <span class="quantity">{this.itemsLeft} item{this.itemsLeft !== 1 ? 's' : ''} left</span>
-          <button onClick={(value) => this.allItems}>All</button>
+          <button onClick={() => this.allItems}>All</button>
           <button>Actvie</button>
           <button onClick={(value) => this.completedItems(value)}>Completed</button>
           <button class="clear">Clear completed</button>
