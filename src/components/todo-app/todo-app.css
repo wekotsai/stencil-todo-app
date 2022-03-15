@@ -54,20 +54,20 @@ label:before {
   margin-right: 1rem;
 }
 
-/* .cross {
-  display: none;
-} */
-
 .remove {
   background-color: white;
   border-radius: 50px;
   border: none;
   float: right;
-}
-
-.remove span {
   color: #cc9a9a;
   font-size: 18px;
+  opacity: 0;
+}
+
+.item:hover .remove,
+.checkbox:focus ~ .remove,
+.remove:focus {
+  opacity: 1;
 }
 
 .strike {
