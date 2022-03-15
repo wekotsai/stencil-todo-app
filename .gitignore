@@ -1,3 +1,6 @@
+# www folder
+/www
+
 # Logs
 logs
 *.log
