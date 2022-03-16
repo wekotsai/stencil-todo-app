@@ -11,9 +11,19 @@ export class TodoApp {
   // always deifne types
   @State() list: string[] = [];
   @State() checked: string[] = [];
+  @State() show: 'all' | 'active' | 'completed' = 'all';
 
   get itemsLeft() {
     return this.list.length - this.checked.length;
+  }
+
+  get displayedList() {
+    const {list, checked} = this;
+    switch (this.show) {
+      case 'all': return list;
+      case 'active': return list.filter(item => !checked.includes(item));
+      case 'completed': return checked;
+    }
   }
 
   inputHandler(event) {
@@ -61,16 +71,7 @@ export class TodoApp {
   }
 
   selectAll() {
-    console.log('hi');
-  }
-
-  completedItems(value) {
-    this.list = this.checked.filter(item => item !== value);
-  }
-
-  // figure out how to show all / active items
-  allItems(value) {
-    this.list = this.checked.filter(value);
+    this.checked = this.checked;
   }
 
  render() {
@@ -82,8 +83,8 @@ export class TodoApp {
       <label htmlFor="selectAll" class="selectAll" onClick={()=>this.selectAll()}></label>
       <div>
         <ul class="list">
-        {(this.list).map(value => (
-          <li class="item">
+        {(this.displayedList).map(value => (
+          <li class={this.isChecked(value) ? 'item item-checked' : 'item'}>
             <input class="checkbox" type="checkbox" checked={this.isChecked(value)} value={value} onChange={() => this.checkboxHandler(value)}/>
               {/* class name strike: is only appended when an item is checked, otherwise it's empty */}
               <span class={{strike:this.isChecked(value)}}>{value}</span>
@@ -93,9 +94,9 @@ export class TodoApp {
         </ul>
         <div class="filters">
           <span class="quantity">{this.itemsLeft} item{this.itemsLeft !== 1 ? 's' : ''} left</span>
-          <button onClick={() => this.allItems}>All</button>
-          <button>Actvie</button>
-          <button onClick={(value) => this.completedItems(value)}>Completed</button>
+          <button onClick={() => (this.show = 'all')}>All</button>
+          <button onClick={() => (this.show = 'active')}>Actvie</button>
+          <button onClick={() => (this.show = 'completed')}>Completed</button>
           <button class="clear">Clear completed</button>
         </div>
       </div>
