@@ -58,7 +58,7 @@ h1 {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.selectAll::before {
+.toggleAll::before {
   content: '❯';
   font-size: 22px;
   color: #e6e6e6;
@@ -69,7 +69,7 @@ h1 {
   transform: rotate(90deg);
 }
 
-.selectAll:checked + label::before {
+.toggleAll--active::before {
   color: #737373;
 }
 
@@ -149,6 +149,11 @@ h1 {
 }
 
 .clear {
+  display: none;
+}
+
+.clear-show {
+  display: inline-block;
   position: absolute;
   right: 0;
 }

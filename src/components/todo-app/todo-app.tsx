@@ -26,12 +26,15 @@ export class TodoApp {
     }
   }
 
+  get isAllChecked() {
+    return this.list.length === this.checked.length;
+  }
+
   inputHandler(event) {
     this.value = event.target.value;
   }
 
   keyUpHandler(event) {
-    console.log(event.key);
     if (event.key === 'Enter') {
       this.addItem();
     }
@@ -41,7 +44,7 @@ export class TodoApp {
   }
 
   addItem() {
-    if (this.value.length !== 0 && !this.list.includes(this.value)) {
+    if (this.value.length !== 0) {
       this.list = this.list.concat([this.value]);
     }
     this.clearInput();
@@ -61,7 +64,6 @@ export class TodoApp {
     }
   }
 
-  // this function is moved outside checkboxHandler so it can be used by another function too (line 69)
   isChecked(value:string) {
     return this.checked.includes(value);
   }
@@ -70,8 +72,17 @@ export class TodoApp {
     this.value = '';
   }
 
-  selectAll() {
-    this.checked = this.checked;
+  toggleAll() {
+    if (this.isAllChecked) {
+      this.checked = [];
+    } else {
+      this.checked = this.list;
+    }
+  }
+
+  clearCompleted() {
+    this.list = this.list.filter(value => !this.checked.includes(value));
+    this.checked = [];
   }
 
  render() {
@@ -80,13 +91,12 @@ export class TodoApp {
       <input
         class="field" value={this.value} type="text" placeholder="What needs to be done?"
         onInput={(event) => this.inputHandler(event)} onKeyUp={(event) => this.keyUpHandler(event)}/>
-      <label htmlFor="selectAll" class="selectAll" onClick={()=>this.selectAll()}></label>
+      <label htmlFor="toggleAll" class={{toggleAll: true, 'toggleAll--active': this.isAllChecked}} onClick={()=>this.toggleAll()}></label>
       <div>
         <ul class="list">
         {(this.displayedList).map(value => (
           <li class={this.isChecked(value) ? 'item item-checked' : 'item'}>
             <input class="checkbox" type="checkbox" checked={this.isChecked(value)} value={value} onChange={() => this.checkboxHandler(value)}/>
-              {/* class name strike: is only appended when an item is checked, otherwise it's empty */}
               <span class={{strike:this.isChecked(value)}}>{value}</span>
             <button class="remove" onClick={()=>this.removeItem(value)}>x</button>
           </li>
@@ -97,7 +107,7 @@ export class TodoApp {
           <button onClick={() => (this.show = 'all')}>All</button>
           <button onClick={() => (this.show = 'active')}>Actvie</button>
           <button onClick={() => (this.show = 'completed')}>Completed</button>
-          <button class="clear">Clear completed</button>
+          <button onClick={() => this.clearCompleted()} class={this.checked.length > 0 ? 'clear-show' : 'clear'}>Clear completed</button>
         </div>
       </div>
     </div>
