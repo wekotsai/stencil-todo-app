@@ -27,7 +27,9 @@ export class TodoApp {
   }
 
   get isAllChecked() {
-    return this.list.length === this.checked.length;
+    if (this.list.length !== 0) {
+      return this.list.length === this.checked.length;
+    }
   }
 
   inputHandler(event) {
