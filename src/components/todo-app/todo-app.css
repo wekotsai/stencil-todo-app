@@ -33,7 +33,7 @@ h1 {
   background-position: center left;
 }
 
-.item-checked {
+.item--checked {
   background-image: url(data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23bddad5%22%20stroke-width%3D%223%22/%3E%3Cpath%20fill%3D%22%235dc2af%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22/%3E%3C/svg%3E);
 }
 
@@ -126,14 +126,16 @@ h1 {
   background-color: white;
 }
 
-.filters button {
+.filterButton {
   border: 1px solid rgba(175, 47, 47, 0);
   border-radius: 3px;
   background-color: transparent;
 }
 
-.filters button:active, .filters button:focus {
+.filterButton--active {
   border: 1px solid rgba(175, 47, 47, 0.2);
+  border-radius: 3px;
+  background-color: transparent;
 }
 
 .filters:before {
@@ -148,12 +150,18 @@ h1 {
   box-shadow: 0 1px 1px rgb(0 0 0 / 20%), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgb(0 0 0 / 20%), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgb(0 0 0 / 20%);
 }
 
-.clear {
+.clear--hidden {
   display: none;
 }
 
-.clear-show {
+.clear--show {
   display: inline-block;
+  background-color: transparent;
+  border: 0;
   position: absolute;
   right: 0;
+}
+
+.clear--show:focus, .clear--show:hover {
+  text-decoration: underline;
 }
