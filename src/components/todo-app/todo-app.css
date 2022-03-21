@@ -120,7 +120,12 @@ h1 {
   padding: 3px 7px;
 }
 
-.filters {
+.filters--hidden {
+  display: none;
+}
+
+.filters--show {
+  display: block;
   height: 25px;
   padding: 0.5rem;
   background-color: white;

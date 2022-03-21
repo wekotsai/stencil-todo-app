@@ -104,7 +104,7 @@ export class TodoApp {
           </li>
         ))}
         </ul>
-        <div class="filters">
+        <div class={this.list.length > 0 ? 'filters--show' : 'filters--hidden'}>
           <span class="quantity">{this.itemsLeft} item{this.itemsLeft !== 1 ? 's' : ''} left</span>
           <button onClick={() => (this.show = 'all')} class={{filterButton: true, 'filterButton--active': this.show === 'all'}}>All</button>
           <button onClick={() => (this.show = 'active')} class={{filterButton: true, 'filterButton--active': this.show === 'active'}}>Actvie</button>
