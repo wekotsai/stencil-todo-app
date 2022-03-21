@@ -1,5 +1,10 @@
 import {Component, Prop, State, h} from '@stencil/core';
 
+interface TodoTask {
+  value: string;
+  isCompleted: boolean;
+}
+
 @Component({
  tag: 'todo-app',
  styleUrl: 'todo-app.css'
@@ -8,27 +13,33 @@ import {Component, Prop, State, h} from '@stencil/core';
 export class TodoApp {
   @Prop() item: string;
   @State() value: string;
-  @State() list: string[] = [];
-  @State() checked: number[] = [];
   @State() show: 'all' | 'active' | 'completed' = 'all';
   @State() selected: boolean = false;
+  @State() tasks: TodoTask[] = [];
 
   get itemsLeft() {
-    return this.list.length - this.checked.length;
+    return this.tasks.length - this.completedTasks.length;
   }
 
-  get displayedList() {
-    const {list, checked} = this;
+  get completedTasks() {
+    return this.tasks.filter(task => task.isCompleted);
+  }
+
+  get activeTasks() {
+    return this.tasks.filter(task => !task.isCompleted);
+  }
+
+  get displayedList(): TodoTask[] {
     switch (this.show) {
-      case 'all': return list;
-      case 'active': return list.filter((_item, index) => !checked.includes(index));
-      case 'completed': return list.filter((_item, index) => checked.includes(index));
+      case 'all': return this.tasks;
+      case 'active': return this.activeTasks;
+      case 'completed': return this.completedTasks;
     }
   }
 
   get isAllChecked() {
-    if (this.list.length !== 0) {
-      return this.list.length === this.checked.length;
+    if (this.tasks.length !== 0) {
+      return this.tasks.length === this.completedTasks.length;
     }
   }
 
@@ -47,27 +58,18 @@ export class TodoApp {
 
   addItem() {
     if (this.value.length !== 0) {
-      this.list = this.list.concat([this.value]);
+      this.tasks = this.tasks.concat([{value: this.value, isCompleted: false}]);
     }
     this.clearInput();
   }
 
-  removeItem(index) {
-    const checkedMap = this.checked.map((oldIndex) => oldIndex === index ? null : this.list[oldIndex]);
-    this.list = this.list.slice(0, index).concat(this.list.slice(index + 1));
-    this.checked = checkedMap.filter(item => item !== null).map((item) => this.list.indexOf(item));
+  removeItem(task: TodoTask) {
+    this.tasks = this.tasks.filter((item) => item !== task);
   }
 
-  checkboxHandler(index:number) {
-    if (this.isChecked(index)) {
-      this.checked = this.checked.filter((item) => item !== index);
-    } else {
-      this.checked = this.checked.concat([index]);
-    }
-  }
-
-  isChecked(index:number) {
-    return this.checked.includes(index);
+  checkboxHandler(task: TodoTask) {
+    task.isCompleted = !task.isCompleted;
+    this.tasks = [].concat(this.tasks);
   }
 
   clearInput() {
@@ -75,16 +77,12 @@ export class TodoApp {
   }
 
   toggleAll() {
-    if (this.isAllChecked) {
-      this.checked = [];
-    } else {
-      this.checked = this.list.map((_item, index) => index) ;
-    }
+    const completeAllTasks = !this.isAllChecked;
+    this.tasks = this.tasks.map(({value}) => ({value, isCompleted: completeAllTasks}));
   }
 
   clearCompleted() {
-    this.list = this.list.filter((_value, index) => !this.checked.includes(index));
-    this.checked = [];
+   this.tasks = this.activeTasks;
   }
 
  render() {
@@ -93,23 +91,23 @@ export class TodoApp {
       <input
         class="field" value={this.value} type="text" placeholder="What needs to be done?"
         onInput={(event) => this.inputHandler(event)} onKeyUp={(event) => this.keyUpHandler(event)}/>
-      <label htmlFor="toggleAll" class={{toggleAll: true, 'toggleAll--active': this.isAllChecked}} onClick={()=>this.toggleAll()}></label>
+      <label htmlFor="toggleAll" class={{toggleAll: true, 'toggleAll--faded': this.tasks.length > 0, 'toggleAll--active': this.isAllChecked}} onClick={()=>this.toggleAll()}></label>
       <div>
         <ul class="list">
-        {(this.displayedList).map((value, index) => (
-          <li class={this.isChecked(index) ? 'item item--checked' : 'item'}>
-            <input class="checkbox" type="checkbox" checked={this.isChecked(index)} value={value} onChange={() => this.checkboxHandler(index)}/>
-              <span class={{strike:this.isChecked(index)}}>{value}</span>
-            <button class="remove" onClick={()=>this.removeItem(index)}>x</button>
+        {(this.displayedList).map(task => (
+          <li class={task.isCompleted ? 'item item--checked' : 'item'}>
+            <input class="checkbox" type="checkbox" checked={task.isCompleted} value={task.value} onChange={() => this.checkboxHandler(task)}/>
+              <span class={{strike:task.isCompleted}}>{task.value}</span>
+            <button class="remove" onClick={()=>this.removeItem(task)}>x</button>
           </li>
         ))}
         </ul>
-        <div class={this.list.length > 0 ? 'filters--show' : 'filters--hidden'}>
+        <div class={this.tasks.length > 0 ? 'filters--show' : 'filters--hidden'}>
           <span class="quantity">{this.itemsLeft} item{this.itemsLeft !== 1 ? 's' : ''} left</span>
           <button onClick={() => (this.show = 'all')} class={{filterButton: true, 'filterButton--active': this.show === 'all'}}>All</button>
           <button onClick={() => (this.show = 'active')} class={{filterButton: true, 'filterButton--active': this.show === 'active'}}>Actvie</button>
           <button onClick={() => (this.show = 'completed')} class={{filterButton: true, 'filterButton--active': this.show === 'completed'}}>Completed</button>
-          <button onClick={() => this.clearCompleted()} class={this.checked.length > 0 ? 'clear--show' : 'clear--hidden'}>Clear completed</button>
+          <button onClick={() => this.clearCompleted()} class={this.completedTasks.length > 0 ? 'clear--show' : 'clear--hidden'}>Clear completed</button>
         </div>
       </div>
     </div>

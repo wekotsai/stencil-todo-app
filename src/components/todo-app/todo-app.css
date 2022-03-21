@@ -59,6 +59,11 @@ h1 {
 }
 
 .toggleAll::before {
+  display: none;
+}
+
+.toggleAll--faded::before {
+  display: block;
   content: '❯';
   font-size: 22px;
   color: #e6e6e6;
@@ -70,6 +75,7 @@ h1 {
 }
 
 .toggleAll--active::before {
+  display: block;
   color: #737373;
 }
 
