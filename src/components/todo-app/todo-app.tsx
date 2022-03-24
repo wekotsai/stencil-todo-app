@@ -1,4 +1,4 @@
-import {Component, Prop, State, h} from '@stencil/core';
+import {Component, Prop, State, h, Watch} from '@stencil/core';
 
 interface TodoTask {
   value: string;
@@ -16,6 +16,10 @@ export class TodoApp {
   @State() show: 'all' | 'active' | 'completed' = 'all';
   @State() selected: boolean = false;
   @State() tasks: TodoTask[] = [];
+  @Watch('tasks')
+    onChangedTasks(newTasks: TodoTask[]) {
+      this.saveTasks(newTasks);
+    }
 
   get itemsLeft() {
     return this.tasks.length - this.completedTasks.length;
@@ -41,6 +45,16 @@ export class TodoApp {
     if (this.tasks.length !== 0) {
       return this.tasks.length === this.completedTasks.length;
     }
+  }
+
+  saveTasks(newTasks: TodoTask[]) {
+    const rawTasks = JSON.stringify(newTasks);
+    localStorage.setItem('tasks', rawTasks);
+  }
+
+  loadTasks() {
+    const tasks: TodoTask[] = JSON.parse(localStorage.getItem('tasks'));
+    this.tasks = tasks;
   }
 
   inputHandler(event) {
@@ -82,7 +96,11 @@ export class TodoApp {
   }
 
   clearCompleted() {
-   this.tasks = this.activeTasks;
+    this.tasks = this.activeTasks;
+  }
+
+  componentWillLoad() {
+    this.loadTasks();
   }
 
  render() {
