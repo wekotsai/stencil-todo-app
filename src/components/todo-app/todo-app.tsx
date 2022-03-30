@@ -48,12 +48,12 @@ export class TodoApp {
   }
 
   saveTasks(newTasks: TodoTask[]) {
-    const rawTasks = JSON.stringify(newTasks);
+    const rawTasks = JSON.stringify(newTasks ?? []);
     localStorage.setItem('tasks', rawTasks);
   }
 
   loadTasks() {
-    const tasks: TodoTask[] = JSON.parse(localStorage.getItem('tasks'));
+    const tasks: TodoTask[] = JSON.parse(localStorage.getItem('tasks') ?? '[]');
     this.tasks = tasks;
   }
 
